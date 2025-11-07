@@ -7,19 +7,19 @@ import org.w3c.dom.Text;
 
 import java.util.UUID;
 
+@Entity
 @Getter
 @Setter
-@Entity
 @Table(name = "comentary")
 public class UserComentary {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "idComentary")
-    private UUID id;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    @Column(name = "id_comentary")
+    private UUID idComentario;
 
     @Column(name = "userComentary")
-    private Text comentary;
+    private String comentary;
 
 
 }
