@@ -2,16 +2,14 @@ package com.hackaton.grupo6.model;
 
 import com.hackaton.grupo6.enums.StatusTask;
 import com.hackaton.grupo6.enums.TaskPriority;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -29,13 +27,19 @@ public class Task {
 
     private String about;
 
-    private UUID idManager;
+    @ManyToOne
+    @JoinColumn(name = "idManager")
+    private User idManager;
 
-    private UUID idEmployee;
+    @ManyToOne
+    @JoinColumn(name = "idEmployee")
+    private User idEmployee;
 
     private TaskPriority taskPriority;
 
-    private UUID team;
+    @ManyToOne
+    @JoinColumn(name = "id")
+    private Team team;
 
     private StatusTask statusTask;
 
@@ -46,4 +50,7 @@ public class Task {
     private Double estimatedTime;
 
     private Double timeSpent;
+
+    @OneToMany(mappedBy = "task")
+    private List<UserComentary> comentary;
 }

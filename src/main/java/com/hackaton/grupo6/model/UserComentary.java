@@ -21,5 +21,11 @@ public class UserComentary {
     @Column(name = "userComentary")
     private String comentary;
 
+    @ManyToOne
+    @JoinColumn(name = "taks")
+    private Task task;
 
+    @OneToOne
+    @JoinColumn(name = "user")
+    private User user;
 }

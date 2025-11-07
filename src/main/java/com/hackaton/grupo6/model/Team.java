@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -20,9 +22,11 @@ public class Team implements Serializable {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
+    private String name;
 
+    @OneToMany(mappedBy = "team")
+    private List<User> users = new ArrayList<>();
 
-
-
-
+    @OneToMany(mappedBy = "team")
+    private List<Task> tasks = new ArrayList<>();
 }
