@@ -2,12 +2,10 @@ package com.hackaton.grupo6.model;
 
 
 import com.hackaton.grupo6.enums.UserEnum;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -24,7 +22,20 @@ public class User {
     private String name;
     private  String email;
     private String password;
-    private UserEnum role;
-    private UUID team;
 
+    @Enumerated(EnumType.STRING)
+    private UserEnum role;
+
+    @ManyToOne
+    @JoinColumn(name = "id")
+    private Team team;
+
+    @OneToOne(mappedBy = "user")
+    private UserComentary userComentary;
+
+    @OneToMany(mappedBy = "idEmployee")
+    private List<Task> task;
+
+    @OneToMany(mappedBy = "idManager")
+    private List<Task> taskCreated;
 }

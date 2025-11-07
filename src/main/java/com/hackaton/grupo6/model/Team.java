@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -14,15 +16,17 @@ import java.util.UUID;
 @NoArgsConstructor //construtor sem argumentos
 @AllArgsConstructor //construtor com todos os argumentos
 
-@Table(name = "tb_team")
+@Table(name = "team")
 public class Team implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
+    private String name;
 
+    @OneToMany(mappedBy = "team")
+    private List<User> users = new ArrayList<>();
 
-
-
-
+    @OneToMany(mappedBy = "team")
+    private List<Task> tasks = new ArrayList<>();
 }
