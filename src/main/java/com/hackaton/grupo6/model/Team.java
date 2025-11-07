@@ -14,7 +14,7 @@ import java.util.UUID;
 @NoArgsConstructor //construtor sem argumentos
 @AllArgsConstructor //construtor com todos os argumentos
 
-@Table(name = "tb_team")
+@Table(name = "team")
 public class Team implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
