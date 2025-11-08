@@ -1,5 +1,7 @@
 package com.hackaton.grupo6.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.hackaton.grupo6.enums.StatusTask;
 import com.hackaton.grupo6.enums.TaskPriority;
 import jakarta.persistence.*;
@@ -29,18 +31,23 @@ public class Task {
 
     @ManyToOne
     @JoinColumn(name = "idManager")
+    @JsonBackReference("manager-tasks")
     private User idManager;
 
     @ManyToOne
     @JoinColumn(name = "idEmployee")
+    @JsonBackReference("employee-tasks")
     private User idEmployee;
 
+    @Enumerated(EnumType.STRING)
     private TaskPriority taskPriority;
 
     @ManyToOne
     @JoinColumn(name = "id")
+    @JsonBackReference("team-tasks")
     private Team team;
 
+    @Enumerated(EnumType.STRING)
     private StatusTask statusTask;
 
     private LocalDateTime endDate;
@@ -52,5 +59,6 @@ public class Task {
     private Double timeSpent;
 
     @OneToMany(mappedBy = "task")
+    @JsonManagedReference("task-comentary")
     private List<UserComentary> comentary;
 }

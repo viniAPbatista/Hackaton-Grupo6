@@ -1,9 +1,13 @@
 package com.hackaton.grupo6.service;
 
+import com.hackaton.grupo6.dto.TeamAddUserRequestDTO;
 import com.hackaton.grupo6.dto.TeamRequestDTO;
 import com.hackaton.grupo6.dto.TeamResponseDTO;
 import com.hackaton.grupo6.model.Team;
+import com.hackaton.grupo6.model.User;
 import com.hackaton.grupo6.repository.TeamRepository;
+import com.hackaton.grupo6.repository.UserRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -11,20 +15,22 @@ import java.util.List;
 import java.util.UUID;
 
 @Service
+@RequiredArgsConstructor
 public class TeamService {
 
     private final TeamRepository teamRepository;
+    private final UserRepository userRepository;
 
-    public TeamService(TeamRepository teamRepository) {
-        this.teamRepository = teamRepository;
-    }
-
-
-    public Team getTeamId(UUID uuid){
+    public TeamResponseDTO getTeamId(UUID uuid){
 
         Team team = teamRepository.findById(uuid).orElseThrow(()->new RuntimeException("Time não encontrado."));
 
-        return  team;
+        return new TeamResponseDTO(
+                team.getId(),
+                team.getName(),
+                team.getUsers(),
+                team.getTasks()
+        );
     }
 
 
@@ -58,5 +64,24 @@ public class TeamService {
         return teamRepository.save(team);
     }
 
+    public TeamResponseDTO addUser(TeamAddUserRequestDTO dto) {
+        Team team = teamRepository.findById(dto.idTeam())
+                .orElseThrow(() -> new RuntimeException("Time não encontrado."));
 
+        User user = userRepository.findById(dto.idUser())
+                .orElseThrow(() -> new RuntimeException("Usuário não encontrado."));
+
+        user.setTeam(team);
+        team.getUsers().add(user);
+
+        userRepository.save(user);
+        teamRepository.save(team);
+
+        return new TeamResponseDTO(
+                team.getId(),
+                team.getName(),
+                team.getUsers(),
+                team.getTasks()
+        );
+    }
 }

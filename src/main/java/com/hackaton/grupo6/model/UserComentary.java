@@ -1,5 +1,7 @@
 package com.hackaton.grupo6.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -23,9 +25,11 @@ public class UserComentary {
 
     @ManyToOne
     @JoinColumn(name = "taks")
+    @JsonBackReference("task-comentary")
     private Task task;
 
     @OneToOne
     @JoinColumn(name = "user")
+    @JsonIgnore
     private User user;
 }
