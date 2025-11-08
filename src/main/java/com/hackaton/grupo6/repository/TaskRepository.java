@@ -1,5 +1,6 @@
 package com.hackaton.grupo6.repository;
 
+import com.hackaton.grupo6.dto.TaskResponseDTO;
 import com.hackaton.grupo6.model.Task;
 import org.springframework.data.jpa.repository.JpaRepository;
 

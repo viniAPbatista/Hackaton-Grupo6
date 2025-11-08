@@ -1,10 +1,9 @@
 package com.hackaton.grupo6.controller;
 
 
-import com.hackaton.grupo6.dto.TeamAddUserRequestDTO;
-import com.hackaton.grupo6.dto.TeamRequestDTO;
-import com.hackaton.grupo6.dto.TeamResponseDTO;
+import com.hackaton.grupo6.dto.*;
 import com.hackaton.grupo6.model.Team;
+import com.hackaton.grupo6.model.User;
 import com.hackaton.grupo6.service.TeamService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -48,5 +47,10 @@ public class TimeController {
     @PatchMapping("/addUser")
     public TeamResponseDTO addUser(@RequestBody TeamAddUserRequestDTO dto) {
         return teamService.addUser(dto);
+    }
+
+    @GetMapping("/teamUsers/{id}")
+    public List<RegisterUserResponseDTO> teamUsers (@PathVariable UUID id) {
+        return teamService.getUsersByTeam(id);
     }
 }

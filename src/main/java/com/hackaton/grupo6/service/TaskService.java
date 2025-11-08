@@ -1,9 +1,6 @@
 package com.hackaton.grupo6.service;
 
-import com.hackaton.grupo6.dto.AddTimeSpentDTO;
-import com.hackaton.grupo6.dto.TaskRequestDTO;
-import com.hackaton.grupo6.dto.TaskResponseDTO;
-import com.hackaton.grupo6.dto.TrasnferTaskRequestDTO;
+import com.hackaton.grupo6.dto.*;
 import com.hackaton.grupo6.model.Task;
 import com.hackaton.grupo6.model.Team;
 import com.hackaton.grupo6.model.User;
@@ -247,5 +244,64 @@ public class TaskService {
                         task.getComentary()
                 ))
                 .toList();
+    }
+
+
+    public TaskResponseDTO changeStatusTask(ChangeStatusTaskRequestDTO dto){
+
+        Task task = taskRepository.findById(dto.id()).orElseThrow(
+                () -> new RuntimeException("Task não encontrada!")
+        );
+
+        task.setStatusTask(dto.status());
+
+        taskRepository.save(task);
+        return new TaskResponseDTO (
+                task.getIdTask(),
+                task.getName(),
+                task.getAbout(),
+                task.getIdManager().getName(),
+                task.getIdEmployee().getName(),
+                task.getTaskPriority(),
+                task.getTeam().getName(),
+                task.getStatusTask(),
+                task.getStartDate(),
+                task.getEndDate(),
+                task.getEstimatedTime(),
+                task.getTimeSpent(),
+                task.getComentary()
+        );
+
+    }
+
+    public TaskResponseDTO userGetTask(UserGetTaskRequest dto) {
+
+        Task task = taskRepository.findById(dto.idUser()).orElseThrow(
+                () -> new RuntimeException("Task não encontrada!")
+        );
+
+        User user = userRepository.findById(dto.idUser()).orElseThrow(
+                () -> new RuntimeException("Usuario não encontrado!")
+        );
+
+        task.setIdEmployee(user);
+
+        taskRepository.save(task);
+
+        return new TaskResponseDTO (
+                task.getIdTask(),
+                task.getName(),
+                task.getAbout(),
+                task.getIdManager().getName(),
+                task.getIdEmployee().getName(),
+                task.getTaskPriority(),
+                task.getTeam().getName(),
+                task.getStatusTask(),
+                task.getStartDate(),
+                task.getEndDate(),
+                task.getEstimatedTime(),
+                task.getTimeSpent(),
+                task.getComentary()
+        );
     }
 }
