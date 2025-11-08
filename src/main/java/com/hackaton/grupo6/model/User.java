@@ -1,6 +1,9 @@
 package com.hackaton.grupo6.model;
 
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.hackaton.grupo6.enums.ActiveStatus;
 import com.hackaton.grupo6.enums.UserEnum;
 import jakarta.persistence.*;
@@ -31,15 +34,18 @@ public class User {
 
     @ManyToOne
     @JoinColumn(name = "team")
+    @JsonBackReference("team-users")
     private Team team;
 
     @OneToOne(mappedBy = "user")
     private UserComentary userComentary;
 
     @OneToMany(mappedBy = "idEmployee")
+    @JsonManagedReference("employee-tasks")
     private List<Task> task;
 
     @OneToMany(mappedBy = "idManager")
+    @JsonManagedReference("manager-tasks")
     private List<Task> taskCreated;
 
     @Enumerated(EnumType.STRING)

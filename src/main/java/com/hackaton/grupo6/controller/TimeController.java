@@ -1,6 +1,7 @@
 package com.hackaton.grupo6.controller;
 
 
+import com.hackaton.grupo6.dto.TeamAddUserRequestDTO;
 import com.hackaton.grupo6.dto.TeamRequestDTO;
 import com.hackaton.grupo6.dto.TeamResponseDTO;
 import com.hackaton.grupo6.model.Team;
@@ -23,7 +24,7 @@ public class TimeController {
     }
 
     @GetMapping("/{uuid}")
-    public Team getTeam(@PathVariable UUID uuid){
+    public TeamResponseDTO getTeam(@PathVariable UUID uuid){
 
         return teamService.getTeamId(uuid);
     }
@@ -42,5 +43,10 @@ public class TimeController {
     public List<Team> getAllTeams() {
 
         return teamService.getAllTeams();
+    }
+
+    @PatchMapping("/addUser")
+    public TeamResponseDTO addUser(@RequestBody TeamAddUserRequestDTO dto) {
+        return teamService.addUser(dto);
     }
 }
