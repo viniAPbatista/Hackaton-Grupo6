@@ -27,4 +27,10 @@ public class RelatorioController {
     public List<TaskResponseDTO> getInProgressTasks() {
         return taskService.getInProgressTasks();
     }
+
+    @GetMapping("/concluidas")
+    public List<TaskResponseDTO> getConcluid(){
+
+        return taskService.getTaskConcluid();
+    }
 }

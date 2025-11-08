@@ -109,6 +109,7 @@ public class TaskService {
 
     }
 
+
     public TaskResponseDTO addTimeSpent(AddTimeSpentDTO dto) {
 
         Task task =  taskRepository.findById(dto.idTask()).orElseThrow(
@@ -348,6 +349,28 @@ public class TaskService {
     // Lista tarefas pendentes
     public List<TaskResponseDTO> getPendingTasks() {
         List<Task> tasks = taskRepository.findByStatusTaskOrderByStartDateDesc(StatusTask.PENDENTE);
+
+        return tasks.stream()
+                .map(task -> new TaskResponseDTO(
+                        task.getIdTask(),
+                        task.getName(),
+                        task.getAbout(),
+                        task.getIdManager().getName(),
+                        task.getIdEmployee().getName(),
+                        task.getTaskPriority(),
+                        task.getTeam().getName(),
+                        task.getStatusTask(),
+                        task.getStartDate(),
+                        task.getEndDate(),
+                        task.getEstimatedTime(),
+                        task.getTimeSpent(),
+                        task.getComentary()
+                ))
+                .toList();
+    }
+
+    public List<TaskResponseDTO>getTaskConcluid(){
+        List<Task> tasks = taskRepository.findByStatusTaskOrderByStartDateDesc(StatusTask.FINALIZADA);
 
         return tasks.stream()
                 .map(task -> new TaskResponseDTO(
