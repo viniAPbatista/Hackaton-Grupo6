@@ -1,6 +1,7 @@
 package com.hackaton.grupo6.service;
 
 import com.hackaton.grupo6.dto.*;
+import com.hackaton.grupo6.enums.UserEnum;
 import com.hackaton.grupo6.model.Team;
 import com.hackaton.grupo6.model.User;
 import com.hackaton.grupo6.repository.TeamRepository;
@@ -37,7 +38,15 @@ public class TeamService {
         return teamRepository.findAll();
     }
 
-    public TeamResponseDTO createTeam(TeamRequestDTO newTeam) {
+    public TeamResponseDTO createTeam(UUID id, TeamRequestDTO newTeam) {
+
+        User user = userRepository.findById(id).orElseThrow(
+                () -> new RuntimeException("Usuario não encontrado!")
+        );
+
+        if (user.getRole() != UserEnum.MANAGER && user.getRole() != UserEnum.ADMIN) {
+            throw new RuntimeException("Acesso negado: apenas MANAGER ou ADMIN podem acessar este recurso.");
+        }
 
         Team team = new Team();
         team.setName(newTeam.name());

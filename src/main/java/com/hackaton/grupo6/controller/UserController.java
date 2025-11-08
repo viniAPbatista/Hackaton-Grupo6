@@ -39,4 +39,9 @@ public class UserController {
     public SetFeriasResponseDTO setFerias(@PathVariable UUID id) {
         return userService.setFerias(id);
     }
+  
+    @PostMapping("/login")
+    public void userLogin(@RequestBody LoginRequestDTO dto) {
+        userService.userLogin(dto);
+    }
 }

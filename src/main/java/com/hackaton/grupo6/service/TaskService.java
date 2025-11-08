@@ -1,6 +1,7 @@
 package com.hackaton.grupo6.service;
 
 import com.hackaton.grupo6.dto.*;
+import com.hackaton.grupo6.enums.UserEnum;
 import com.hackaton.grupo6.model.Task;
 import com.hackaton.grupo6.model.Team;
 import com.hackaton.grupo6.model.User;
@@ -25,6 +26,15 @@ public class TaskService {
     private final TeamRepository teamRepository;
 
     public TaskResponseDTO createTask(@RequestBody TaskRequestDTO taskRequest) {
+
+        User user = userRepository.findById(taskRequest.idManager()).orElseThrow(
+                () -> new RuntimeException("Usuario não encontrado!")
+        );
+
+        if (user.getRole() != UserEnum.MANAGER && user.getRole() != UserEnum.ADMIN) {
+            throw new RuntimeException("Acesso negado: apenas MANAGER ou ADMIN podem acessar este recurso.");
+        }
+
 
         Task newTask = new Task();
         newTask.setName(taskRequest.name());
@@ -161,6 +171,10 @@ public class TaskService {
                 () -> new RuntimeException("usuario não encontrado!")
         );
 
+        if (user.getRole() != UserEnum.MANAGER && user.getRole() != UserEnum.ADMIN) {
+            throw new RuntimeException("Acesso negado: apenas MANAGER ou ADMIN podem acessar este recurso.");
+        }
+
         task.setIdEmployee(user);
 
         taskRepository.save(task);
@@ -183,7 +197,7 @@ public class TaskService {
     }
 
     public List<TaskResponseDTO> getTasksByEmployeeId(UUID userId) {
-        List<Task> tasks = taskRepository.findByIdEmployee_IdUser(userId);
+        List<Task> tasks = taskRepository.findByIdEmployee_IdUserOrderByStartDateDesc(userId);
 
         return tasks.stream()
                 .map(task -> new TaskResponseDTO(
@@ -202,6 +216,30 @@ public class TaskService {
                         task.getComentary()
                 ))
                 .toList();
+    }
+
+    public List<TaskResponseDTO> getTasksHistoryByUserIdentifier(String identifier) {
+        UUID userId;
+        try {
+            userId = UUID.fromString(identifier);
+        } catch (IllegalArgumentException ex) {
+            try {
+                int index = Integer.parseInt(identifier);
+                if (index < 1) {
+                    throw new RuntimeException("ID numérico deve ser >= 1");
+                }
+
+                var users = userRepository.findAll();
+                if (index > users.size()) {
+                    throw new RuntimeException("Usuário numérico não encontrado");
+                }
+                userId = users.get(index - 1).getIdUser();
+            } catch (NumberFormatException nf) {
+                throw new RuntimeException("Identificador de usuário inválido. Use UUID ou número.");
+            }
+        }
+
+        return getTasksByEmployeeId(userId);
     }
 
     public List<TaskResponseDTO> getTasksByManager(UUID userId) {
@@ -305,5 +343,51 @@ public class TaskService {
                 task.getTimeSpent(),
                 task.getComentary()
         );
+    }
+
+    // Lista tarefas pendentes
+    public List<TaskResponseDTO> getPendingTasks() {
+        List<Task> tasks = taskRepository.findByStatusTaskOrderByStartDateDesc(StatusTask.PENDENTE);
+
+        return tasks.stream()
+                .map(task -> new TaskResponseDTO(
+                        task.getIdTask(),
+                        task.getName(),
+                        task.getAbout(),
+                        task.getIdManager().getName(),
+                        task.getIdEmployee().getName(),
+                        task.getTaskPriority(),
+                        task.getTeam().getName(),
+                        task.getStatusTask(),
+                        task.getStartDate(),
+                        task.getEndDate(),
+                        task.getEstimatedTime(),
+                        task.getTimeSpent(),
+                        task.getComentary()
+                ))
+                .toList();
+    }
+
+    // Lista tarefas em andamento
+    public List<TaskResponseDTO> getInProgressTasks() {
+        List<Task> tasks = taskRepository.findByStatusTaskOrderByStartDateDesc(StatusTask.EM_ANDAMENTO);
+
+        return tasks.stream()
+                .map(task -> new TaskResponseDTO(
+                        task.getIdTask(),
+                        task.getName(),
+                        task.getAbout(),
+                        task.getIdManager().getName(),
+                        task.getIdEmployee().getName(),
+                        task.getTaskPriority(),
+                        task.getTeam().getName(),
+                        task.getStatusTask(),
+                        task.getStartDate(),
+                        task.getEndDate(),
+                        task.getEstimatedTime(),
+                        task.getTimeSpent(),
+                        task.getComentary()
+                ))
+                .toList();
     }
 }
