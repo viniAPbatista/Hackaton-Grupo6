@@ -45,3 +45,4 @@ public class User {
     @Enumerated(EnumType.STRING)
     private ActiveStatus activeStatus;
 }
+
