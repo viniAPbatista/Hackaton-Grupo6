@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -36,9 +37,27 @@ public class TaskController {
     @PatchMapping("/trasferTask")
     public TaskResponseDTO trasnferTask(@RequestBody TrasnferTaskRequestDTO dto) {
         return taskService.transferTask(dto);
+    }
+
     @PutMapping("/finalizar/{id}")
     public ResponseEntity<TaskResponseDTO> finalizeTask(@PathVariable UUID id) {
         return ResponseEntity.ok(taskService.finalizeTask(id));
     }
+
+    @GetMapping("taskEmployee/{id}")
+    public List<TaskResponseDTO> getTasksEmployee(@PathVariable UUID id) {
+        return taskService.getTasksByEmployeeId(id);
+    }
+
+    @GetMapping("taskManager/{id}")
+    public List<TaskResponseDTO> getTasksManager(@PathVariable UUID id) {
+        return taskService.getTasksByManager(id);
+    }
+
+    @GetMapping("taskTeam/{id}")
+    public List<TaskResponseDTO> getTasksTeam(@PathVariable UUID id) {
+        return taskService.getTasksTeam(id);
+    }
 }
+
 
