@@ -1,8 +1,6 @@
 package com.hackaton.grupo6.service;
 
-import com.hackaton.grupo6.dto.TeamAddUserRequestDTO;
-import com.hackaton.grupo6.dto.TeamRequestDTO;
-import com.hackaton.grupo6.dto.TeamResponseDTO;
+import com.hackaton.grupo6.dto.*;
 import com.hackaton.grupo6.model.Team;
 import com.hackaton.grupo6.model.User;
 import com.hackaton.grupo6.repository.TeamRepository;
@@ -83,5 +81,9 @@ public class TeamService {
                 team.getUsers(),
                 team.getTasks()
         );
+    }
+
+    public List<RegisterUserResponseDTO> getUsersByTeam(UUID idTeam) {
+        return userRepository.findByTeam_Id(idTeam);
     }
 }

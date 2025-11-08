@@ -1,9 +1,6 @@
 package com.hackaton.grupo6.service;
 
-import com.hackaton.grupo6.dto.AddTimeSpentDTO;
-import com.hackaton.grupo6.dto.TaskRequestDTO;
-import com.hackaton.grupo6.dto.TaskResponseDTO;
-import com.hackaton.grupo6.dto.TrasnferTaskRequestDTO;
+import com.hackaton.grupo6.dto.*;
 import com.hackaton.grupo6.model.Task;
 import com.hackaton.grupo6.model.Team;
 import com.hackaton.grupo6.model.User;
@@ -15,8 +12,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 import java.time.LocalDateTime;
 import com.hackaton.grupo6.enums.StatusTask;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
+
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -107,10 +104,25 @@ public class TaskService {
         );
 
         task.setTimeSpent(dto.timeSpent());
-
         taskRepository.save(task);
 
-        return new TaskResponseDTO (
+        return new TaskResponseDTO(
+                task.getIdTask(),
+                task.getName(),
+                task.getAbout(),
+                task.getIdManager().getName(),
+                task.getIdEmployee().getName(),
+                task.getTaskPriority(),
+                task.getTeam().getName(),
+                task.getStatusTask(),
+                task.getStartDate(),
+                task.getEndDate(),
+                task.getEstimatedTime(),
+                task.getTimeSpent(),
+                task.getComentary()
+        );
+    }
+
     public TaskResponseDTO finalizeTask(UUID id) {
         Task task = taskRepository.findById(id).orElseThrow(
                 () -> new RuntimeException("Tarefa não encontrada!")
@@ -145,6 +157,131 @@ public class TaskService {
 
         User user = userRepository.findById(dto.idNewUser()).orElseThrow(
                 () -> new RuntimeException("usuario não encontrado!")
+        );
+
+        task.setIdEmployee(user);
+
+        taskRepository.save(task);
+
+        return new TaskResponseDTO (
+                task.getIdTask(),
+                task.getName(),
+                task.getAbout(),
+                task.getIdManager().getName(),
+                task.getIdEmployee().getName(),
+                task.getTaskPriority(),
+                task.getTeam().getName(),
+                task.getStatusTask(),
+                task.getStartDate(),
+                task.getEndDate(),
+                task.getEstimatedTime(),
+                task.getTimeSpent(),
+                task.getComentary()
+        );
+    }
+
+    public List<TaskResponseDTO> getTasksByEmployeeId(UUID userId) {
+        List<Task> tasks = taskRepository.findByIdEmployee_IdUser(userId);
+
+        return tasks.stream()
+                .map(task -> new TaskResponseDTO(
+                        task.getIdTask(),
+                        task.getName(),
+                        task.getAbout(),
+                        task.getIdManager().getName(),
+                        task.getIdEmployee().getName(),
+                        task.getTaskPriority(),
+                        task.getTeam().getName(),
+                        task.getStatusTask(),
+                        task.getStartDate(),
+                        task.getEndDate(),
+                        task.getEstimatedTime(),
+                        task.getTimeSpent(),
+                        task.getComentary()
+                ))
+                .toList();
+    }
+
+    public List<TaskResponseDTO> getTasksByManager(UUID userId) {
+        List<Task> tasks = taskRepository.findByIdManager_IdUser(userId);
+
+        return tasks.stream()
+                .map(task -> new TaskResponseDTO(
+                        task.getIdTask(),
+                        task.getName(),
+                        task.getAbout(),
+                        task.getIdManager().getName(),
+                        task.getIdEmployee().getName(),
+                        task.getTaskPriority(),
+                        task.getTeam().getName(),
+                        task.getStatusTask(),
+                        task.getStartDate(),
+                        task.getEndDate(),
+                        task.getEstimatedTime(),
+                        task.getTimeSpent(),
+                        task.getComentary()
+                ))
+                .toList();
+    }
+
+    public List<TaskResponseDTO> getTasksTeam(UUID id) {
+        List<Task> tasks = taskRepository.findByTeam_Id(id);
+
+        return tasks.stream()
+                .map(task -> new TaskResponseDTO(
+                        task.getIdTask(),
+                        task.getName(),
+                        task.getAbout(),
+                        task.getIdManager().getName(),
+                        task.getIdEmployee().getName(),
+                        task.getTaskPriority(),
+                        task.getTeam().getName(),
+                        task.getStatusTask(),
+                        task.getStartDate(),
+                        task.getEndDate(),
+                        task.getEstimatedTime(),
+                        task.getTimeSpent(),
+                        task.getComentary()
+                ))
+                .toList();
+    }
+
+
+    public TaskResponseDTO changeStatusTask(ChangeStatusTaskRequestDTO dto){
+
+        Task task = taskRepository.findById(dto.id()).orElseThrow(
+                () -> new RuntimeException("Task não encontrada!")
+        );
+
+        task.setStatusTask(dto.status());
+
+        taskRepository.save(task);
+        return new TaskResponseDTO (
+                task.getIdTask(),
+                task.getName(),
+                task.getAbout(),
+                task.getIdManager().getName(),
+                task.getIdEmployee().getName(),
+                task.getTaskPriority(),
+                task.getTeam().getName(),
+                task.getStatusTask(),
+                task.getStartDate(),
+                task.getEndDate(),
+                task.getEstimatedTime(),
+                task.getTimeSpent(),
+                task.getComentary()
+        );
+
+    }
+
+    public TaskResponseDTO userGetTask(UserGetTaskRequest dto) {
+
+        Task task = taskRepository.findById(dto.idUser()).orElseThrow(
+                () -> new RuntimeException("Task não encontrada!")
+        );
+
+        User user = userRepository.findById(dto.idUser()).orElseThrow(
+                () -> new RuntimeException("Usuario não encontrado!")
         );
 
         task.setIdEmployee(user);
