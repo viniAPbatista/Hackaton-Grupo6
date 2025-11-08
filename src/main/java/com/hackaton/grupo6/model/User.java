@@ -1,6 +1,7 @@
 package com.hackaton.grupo6.model;
 
 
+import com.hackaton.grupo6.enums.ActiveStatus;
 import com.hackaton.grupo6.enums.UserEnum;
 import jakarta.persistence.*;
 import lombok.*;
@@ -20,14 +21,16 @@ public class User {
     private UUID idUser;
 
     private String name;
+
     private  String email;
+
     private String password;
 
     @Enumerated(EnumType.STRING)
     private UserEnum role;
 
     @ManyToOne
-    @JoinColumn(name = "id")
+    @JoinColumn(name = "team")
     private Team team;
 
     @OneToOne(mappedBy = "user")
@@ -38,4 +41,8 @@ public class User {
 
     @OneToMany(mappedBy = "idManager")
     private List<Task> taskCreated;
+
+    @Enumerated(EnumType.STRING)
+    private ActiveStatus activeStatus;
 }
+

@@ -9,13 +9,10 @@ import java.util.List;
 import java.util.UUID;
 
 @Entity
-@Getter
-@Setter
-@ToString
-@EqualsAndHashCode(onlyExplicitlyIncluded = true) //para equals e hashCode, incluindo apenas o campo id.
 @NoArgsConstructor //construtor sem argumentos
 @AllArgsConstructor //construtor com todos os argumentos
-
+@Getter
+@Setter
 @Table(name = "team")
 public class Team implements Serializable {
     @Id
@@ -29,4 +26,5 @@ public class Team implements Serializable {
 
     @OneToMany(mappedBy = "team")
     private List<Task> tasks = new ArrayList<>();
+
 }
