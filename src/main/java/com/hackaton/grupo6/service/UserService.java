@@ -1,9 +1,6 @@
 package com.hackaton.grupo6.service;
 
-import com.hackaton.grupo6.dto.GetUserResponseDTO;
-import com.hackaton.grupo6.dto.RegisterUserRequestDTO;
-import com.hackaton.grupo6.dto.RegisterUserResponseDTO;
-import com.hackaton.grupo6.dto.UpdateUserRequestDTO;
+import com.hackaton.grupo6.dto.*;
 import com.hackaton.grupo6.enums.ActiveStatus;
 import com.hackaton.grupo6.model.User;
 import com.hackaton.grupo6.repository.UserRepository;
@@ -107,5 +104,17 @@ public class UserService {
         return userRepository.findById(id).orElseThrow(
                 () -> new RuntimeException("User not found")
         );
+    }
+
+    public void userLogin(LoginRequestDTO dto) {
+
+        var usuario = userRepository.findByEmail(dto.email())
+                .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
+
+        boolean senhaCorreta = passwordEncoder.matches(dto.password(), usuario.getPassword());
+
+        if (!senhaCorreta) {
+            throw new RuntimeException("Senha incorreta");
+        }
     }
 }

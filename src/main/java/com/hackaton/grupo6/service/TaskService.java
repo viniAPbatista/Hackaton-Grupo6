@@ -1,6 +1,7 @@
 package com.hackaton.grupo6.service;
 
 import com.hackaton.grupo6.dto.*;
+import com.hackaton.grupo6.enums.UserEnum;
 import com.hackaton.grupo6.model.Task;
 import com.hackaton.grupo6.model.Team;
 import com.hackaton.grupo6.model.User;
@@ -25,6 +26,15 @@ public class TaskService {
     private final TeamRepository teamRepository;
 
     public TaskResponseDTO createTask(@RequestBody TaskRequestDTO taskRequest) {
+
+        User user = userRepository.findById(taskRequest.idManager()).orElseThrow(
+                () -> new RuntimeException("Usuario não encontrado!")
+        );
+
+        if (user.getRole() != UserEnum.MANAGER && user.getRole() != UserEnum.ADMIN) {
+            throw new RuntimeException("Acesso negado: apenas MANAGER ou ADMIN podem acessar este recurso.");
+        }
+
 
         Task newTask = new Task();
         newTask.setName(taskRequest.name());
@@ -158,6 +168,10 @@ public class TaskService {
         User user = userRepository.findById(dto.idNewUser()).orElseThrow(
                 () -> new RuntimeException("usuario não encontrado!")
         );
+
+        if (user.getRole() != UserEnum.MANAGER && user.getRole() != UserEnum.ADMIN) {
+            throw new RuntimeException("Acesso negado: apenas MANAGER ou ADMIN podem acessar este recurso.");
+        }
 
         task.setIdEmployee(user);
 
