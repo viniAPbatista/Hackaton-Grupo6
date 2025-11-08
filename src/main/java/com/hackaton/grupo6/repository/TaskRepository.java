@@ -10,6 +10,7 @@ import java.util.UUID;
 public interface TaskRepository extends JpaRepository<Task,UUID> {
 
     List<Task> findByIdEmployee_IdUser(UUID idEmployee);
+    List<Task> findByIdEmployee_IdUserOrderByStartDateDesc(UUID idEmployee);
     List<Task> findByIdManager_IdUser(UUID idManager);
     List<Task> findByTeam_Id(UUID id);
 

@@ -181,7 +181,7 @@ public class TaskService {
     }
 
     public List<TaskResponseDTO> getTasksByEmployeeId(UUID userId) {
-        List<Task> tasks = taskRepository.findByIdEmployee_IdUser(userId);
+        List<Task> tasks = taskRepository.findByIdEmployee_IdUserOrderByStartDateDesc(userId);
 
         return tasks.stream()
                 .map(task -> new TaskResponseDTO(
@@ -200,6 +200,30 @@ public class TaskService {
                         task.getComentary()
                 ))
                 .toList();
+    }
+
+    public List<TaskResponseDTO> getTasksHistoryByUserIdentifier(String identifier) {
+        UUID userId;
+        try {
+            userId = UUID.fromString(identifier);
+        } catch (IllegalArgumentException ex) {
+            try {
+                int index = Integer.parseInt(identifier);
+                if (index < 1) {
+                    throw new RuntimeException("ID numérico deve ser >= 1");
+                }
+
+                var users = userRepository.findAll();
+                if (index > users.size()) {
+                    throw new RuntimeException("Usuário numérico não encontrado");
+                }
+                userId = users.get(index - 1).getIdUser();
+            } catch (NumberFormatException nf) {
+                throw new RuntimeException("Identificador de usuário inválido. Use UUID ou número.");
+            }
+        }
+
+        return getTasksByEmployeeId(userId);
     }
 
     public List<TaskResponseDTO> getTasksByManager(UUID userId) {
