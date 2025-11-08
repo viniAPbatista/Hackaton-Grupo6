@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.UUID;
 
+@RequestMapping("/team")
 @RestController
 public class TimeController {
 
@@ -21,10 +22,10 @@ public class TimeController {
         this.teamService = teamService;
     }
 
-    @GetMapping("{/id}")
+    @GetMapping("/{uuid}")
     public Team getTeam(@PathVariable UUID uuid){
 
-        return teamService.getTeamResponseDTO(uuid);
+        return teamService.getTeamId(uuid);
     }
 
     @PostMapping()

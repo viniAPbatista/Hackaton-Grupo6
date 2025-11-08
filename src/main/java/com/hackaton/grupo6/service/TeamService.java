@@ -20,7 +20,7 @@ public class TeamService {
     }
 
 
-    public Team getTeamResponseDTO(UUID uuid){
+    public Team getTeamId(UUID uuid){
 
         Team team = teamRepository.findById(uuid).orElseThrow(()->new RuntimeException("Time não encontrado."));
 
@@ -37,8 +37,6 @@ public class TeamService {
 
         Team team = new Team();
         team.setName(newTeam.name());
-        team.setUsers(new ArrayList<>());
-        team.setTasks(new ArrayList<>());
 
         teamRepository.save(team);
 
