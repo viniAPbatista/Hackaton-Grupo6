@@ -9,6 +9,12 @@ import com.hackaton.grupo6.repository.TaskRepository;
 import com.hackaton.grupo6.repository.UserRepository;
 import com.hackaton.grupo6.dto.TaskRequestDTO;
 import com.hackaton.grupo6.dto.TaskResponseDTO;
+import com.hackaton.grupo6.model.Team;
+
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 
 @Service
 @Transactional
@@ -29,33 +35,20 @@ public class TaskService {
         Task task = new Task();
         task.setName(dto.name());
         task.setAbout(dto.about());
-        task.setTeam(dto.team());
-        task.setIdManager(manager.getId());
-        task.setIdEmployee(employee.getId());
+        task.setIdManager(manager);
+        task.setIdEmployee(employee);
+        task.setTaskPriority(dto.taskPriority());
+        task.setTeam(IdTeam);
+        task.setStatusTask(dto.statusTask());
         task.setStartDate(dto.startDate());
         task.setEndDate(dto.endDate());
-        task.setTimeSpent(dto.timeSpent());
-        task.setTaskPriority(dto.taskPriority());
-        task.setStatusTask(dto.statusTask());
         task.setEstimatedTime(dto.estimatedTime());
+        task.setTimeSpent(dto.timeSpent());
+        task.setComentary(new ArrayList<>()); // inicia vazio
 
         Task saved = taskRepository.save(task);
 
-        return new TaskResponseDTO(
-                saved.getIdTask(),
-                saved.getName(),
-                saved.getIdTask(),
-                saved.getAbout(),
-                saved.getTeam(),
-                saved.getIdManager(),
-                saved.getIdEmployee(),
-                saved.getStartDate(),
-                saved.getEndDate(),
-                saved.getTimeSpent(),
-                saved.getTaskPriority(),
-                saved.getStatusTask(),
-                saved.getEstimatedTime()
-        );
+        return toResponseDTO(saved);
     }
 
     public List<TaskResponseDTO> findAll() {
@@ -64,9 +57,28 @@ public class TaskService {
                 .toList();
     }
 
-    public TaskResponseDTO findById(Long id) {
+    public TaskResponseDTO findById(UUID id) {
         Task task = taskRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Task não encontrada"));
         return toResponseDTO(task);
     }
+
+    private TaskResponseDTO toResponseDTO(Task task) {
+        return new TaskResponseDTO(
+                task.getIdTask(),
+                task.getName(),
+                task.getAbout(),
+                task.getIdManager().getIdUser(),   // pega o ID do manager
+                task.getIdEmployee().getIdUser(), // pega o ID do employee
+                task.getTaskPriority(),
+                task.getTeam().getIdTeam(),           // pega o ID da equipe
+                task.getStatusTask(),
+                task.getStartDate(),
+                task.getEndDate(),
+                task.getEstimatedTime(),
+                task.getTimeSpent(),
+                task.getComentary()
+        );
+    }
+
 }

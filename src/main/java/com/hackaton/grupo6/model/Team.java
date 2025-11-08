@@ -20,7 +20,7 @@ import java.util.UUID;
 public class Team implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID id;
+    private UUID idTeam;
 
     private String name;
 
