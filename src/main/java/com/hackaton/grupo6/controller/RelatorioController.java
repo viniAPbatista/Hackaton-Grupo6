@@ -17,4 +17,14 @@ public class RelatorioController {
     public List<TaskResponseDTO> getUserTaskHistory(@PathVariable String id) {
         return taskService.getTasksHistoryByUserIdentifier(id);
     }
+
+    @GetMapping("/pendentes")
+    public List<TaskResponseDTO> getPendingTasks() {
+        return taskService.getPendingTasks();
+    }
+
+    @GetMapping("/andamento")
+    public List<TaskResponseDTO> getInProgressTasks() {
+        return taskService.getInProgressTasks();
+    }
 }

@@ -328,4 +328,50 @@ public class TaskService {
                 task.getComentary()
         );
     }
+
+    // Lista tarefas pendentes
+    public List<TaskResponseDTO> getPendingTasks() {
+        List<Task> tasks = taskRepository.findByStatusTaskOrderByStartDateDesc(StatusTask.PENDENTE);
+
+        return tasks.stream()
+                .map(task -> new TaskResponseDTO(
+                        task.getIdTask(),
+                        task.getName(),
+                        task.getAbout(),
+                        task.getIdManager().getName(),
+                        task.getIdEmployee().getName(),
+                        task.getTaskPriority(),
+                        task.getTeam().getName(),
+                        task.getStatusTask(),
+                        task.getStartDate(),
+                        task.getEndDate(),
+                        task.getEstimatedTime(),
+                        task.getTimeSpent(),
+                        task.getComentary()
+                ))
+                .toList();
+    }
+
+    // Lista tarefas em andamento
+    public List<TaskResponseDTO> getInProgressTasks() {
+        List<Task> tasks = taskRepository.findByStatusTaskOrderByStartDateDesc(StatusTask.EM_ANDAMENTO);
+
+        return tasks.stream()
+                .map(task -> new TaskResponseDTO(
+                        task.getIdTask(),
+                        task.getName(),
+                        task.getAbout(),
+                        task.getIdManager().getName(),
+                        task.getIdEmployee().getName(),
+                        task.getTaskPriority(),
+                        task.getTeam().getName(),
+                        task.getStatusTask(),
+                        task.getStartDate(),
+                        task.getEndDate(),
+                        task.getEstimatedTime(),
+                        task.getTimeSpent(),
+                        task.getComentary()
+                ))
+                .toList();
+    }
 }

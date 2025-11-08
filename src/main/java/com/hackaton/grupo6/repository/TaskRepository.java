@@ -1,6 +1,7 @@
 package com.hackaton.grupo6.repository;
 
 import com.hackaton.grupo6.dto.TaskResponseDTO;
+import com.hackaton.grupo6.enums.StatusTask;
 import com.hackaton.grupo6.model.Task;
 import org.springframework.data.jpa.repository.JpaRepository;
 
@@ -13,5 +14,6 @@ public interface TaskRepository extends JpaRepository<Task,UUID> {
     List<Task> findByIdEmployee_IdUserOrderByStartDateDesc(UUID idEmployee);
     List<Task> findByIdManager_IdUser(UUID idManager);
     List<Task> findByTeam_Id(UUID id);
+    List<Task> findByStatusTaskOrderByStartDateDesc(StatusTask status);
 
 }
