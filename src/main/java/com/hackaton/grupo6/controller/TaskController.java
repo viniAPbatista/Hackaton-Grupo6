@@ -1,4 +1,27 @@
 package com.hackaton.grupo6.controller;
 
+import com.hackaton.grupo6.dto.TaskRequestDTO;
+import com.hackaton.grupo6.dto.TaskResponseDTO;
+import com.hackaton.grupo6.service.TaskService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.UUID;
+
+@RestController
+@RequestMapping("/task")
+@RequiredArgsConstructor
 public class TaskController {
+
+    private final TaskService taskService;
+
+    @PostMapping
+    public TaskResponseDTO createTask(@RequestBody TaskRequestDTO taskRequest) {
+        return taskService.createTask(taskRequest);
+    }
+
+    @GetMapping("/{id}")
+    public TaskResponseDTO getTask(@PathVariable UUID id) {
+        return taskService.getTask(id);
+    }
 }
