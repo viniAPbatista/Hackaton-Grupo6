@@ -35,12 +35,14 @@ public class Task {
     @JoinColumn(name = "idEmployee")
     private User idEmployee;
 
+    @Enumerated(EnumType.STRING)
     private TaskPriority taskPriority;
 
     @ManyToOne
     @JoinColumn(name = "id")
     private Team team;
 
+    @Enumerated(EnumType.STRING)
     private StatusTask statusTask;
 
     private LocalDateTime endDate;

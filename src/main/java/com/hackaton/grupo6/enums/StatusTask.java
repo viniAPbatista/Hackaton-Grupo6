@@ -3,6 +3,6 @@ package com.hackaton.grupo6.enums;
 public enum StatusTask {
 
     PENDENTE,
-    COMPLETA,
+    FINALIZADA,
     EM_ANDAMENTO
 }

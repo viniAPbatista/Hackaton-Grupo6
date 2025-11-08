@@ -4,6 +4,7 @@ import com.hackaton.grupo6.dto.TaskRequestDTO;
 import com.hackaton.grupo6.dto.TaskResponseDTO;
 import com.hackaton.grupo6.service.TaskService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
@@ -24,4 +25,10 @@ public class TaskController {
     public TaskResponseDTO getTask(@PathVariable UUID id) {
         return taskService.getTask(id);
     }
+
+    @PutMapping("/finalizar/{id}")
+    public ResponseEntity<TaskResponseDTO> finalizeTask(@PathVariable UUID id) {
+        return ResponseEntity.ok(taskService.finalizeTask(id));
+    }
 }
+

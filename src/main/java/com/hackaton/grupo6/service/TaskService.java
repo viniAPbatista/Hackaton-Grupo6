@@ -11,7 +11,10 @@ import com.hackaton.grupo6.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
-
+import java.time.LocalDateTime;
+import com.hackaton.grupo6.enums.StatusTask;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Service
@@ -92,5 +95,33 @@ public class TaskService {
                 task.getTimeSpent(),
                 task.getComentary()
         );
+
     }
+
+    public TaskResponseDTO finalizeTask(UUID id) {
+        Task task = taskRepository.findById(id).orElseThrow(
+                () -> new RuntimeException("Tarefa não encontrada!")
+        );
+
+        task.setStatusTask(StatusTask.FINALIZADA); // Enum, não String
+        task.setEndDate(LocalDateTime.now()); // LocalDateTime, não LocalDate
+        taskRepository.save(task);
+
+        return new TaskResponseDTO(
+                task.getIdTask(),
+                task.getName(),
+                task.getAbout(),
+                task.getIdManager().getName(),
+                task.getIdEmployee().getName(),
+                task.getTaskPriority(),
+                task.getTeam().getName(),
+                task.getStatusTask(),
+                task.getStartDate(),
+                task.getEndDate(),
+                task.getEstimatedTime(),
+                task.getTimeSpent(),
+                task.getComentary()
+        );
+    }
+
 }
