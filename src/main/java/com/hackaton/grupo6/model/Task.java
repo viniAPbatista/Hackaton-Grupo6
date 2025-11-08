@@ -35,7 +35,7 @@ public class Task {
     private User idManager;
 
     @ManyToOne
-    @JoinColumn(name = "idEmployee")
+    @JoinColumn(name = "idEmployee",nullable = true)
     @JsonBackReference("employee-tasks")
     private User idEmployee;
 

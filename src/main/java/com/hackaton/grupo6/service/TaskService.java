@@ -46,9 +46,11 @@ public class TaskService {
 
         newTask.setIdManager(manager);
 
-        User employee = userRepository.findById(taskRequest.idEmployee()).orElseThrow(
-                () -> new RuntimeException("Usuario não encontrado!")
-        );
+        User employee = null;
+        if (taskRequest.idEmployee() != null) {
+            employee = userRepository.findById(taskRequest.idEmployee())
+                    .orElseThrow(() -> new RuntimeException("Usuario não encontrado!"));
+        }
 
         newTask.setIdEmployee(employee);
         newTask.setTaskPriority(taskRequest.taskPriority());
@@ -71,7 +73,7 @@ public class TaskService {
                 newTask.getName(),
                 newTask.getAbout(),
                 newTask.getIdManager().getName(),
-                newTask.getIdEmployee().getName(),
+                newTask.getIdEmployee() != null ? newTask.getIdEmployee().getName() : null,
                 newTask.getTaskPriority(),
                 newTask.getTeam().getName(),
                 newTask.getStatusTask(),
