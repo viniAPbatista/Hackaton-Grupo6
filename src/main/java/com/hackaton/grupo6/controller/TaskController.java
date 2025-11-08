@@ -6,6 +6,7 @@ import com.hackaton.grupo6.dto.TaskResponseDTO;
 import com.hackaton.grupo6.dto.TrasnferTaskRequestDTO;
 import com.hackaton.grupo6.service.TaskService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
@@ -35,5 +36,9 @@ public class TaskController {
     @PatchMapping("/trasferTask")
     public TaskResponseDTO trasnferTask(@RequestBody TrasnferTaskRequestDTO dto) {
         return taskService.transferTask(dto);
+    @PutMapping("/finalizar/{id}")
+    public ResponseEntity<TaskResponseDTO> finalizeTask(@PathVariable UUID id) {
+        return ResponseEntity.ok(taskService.finalizeTask(id));
     }
 }
+
