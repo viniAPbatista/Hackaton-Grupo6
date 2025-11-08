@@ -31,6 +31,35 @@ Acessar o site do Postman para poder fazer as requisições para teste.
 
 
 ### Tabela de Requisições via Postman
+| Categoria | Método & Endpoint          | Descrição                                 |
+| --------- | -------------------------- | ----------------------------------------- |
+| **Users** | `POST /api/users/register` | Registra um novo usuário.                 |
+| **Users** | `POST /api/users/login`    | Autentica um usuário e retorna token JWT. |
+| **Users** | `GET /api/users/{id}`      | Retorna os dados de um usuário pelo ID.   |
+| **Users** | `PUT /api/users/{id}`      | Atualiza dados de um usuário existente.   |
+| **Users** | `DELETE /api/users/{id}`   | Desativa ou remove um usuário.            |
+
+| Categoria | Método & Endpoint        | Descrição                                  |
+| --------- | ------------------------ | ------------------------------------------ |
+| **Teams** | `GET /api/teams`         | Lista todas as equipes.                    |
+| **Teams** | `POST /api/teams`        | Cria uma nova equipe.                      |
+| **Teams** | `GET /api/teams/{id}`    | Retorna os dados de uma equipe específica. |
+| **Teams** | `PUT /api/teams/{id}`    | Atualiza uma equipe.                       |
+| **Teams** | `DELETE /api/teams/{id}` | Remove uma equipe.                         |
+
+| Categoria | Método & Endpoint        | Descrição                           |
+| --------- | ------------------------ | ----------------------------------- |
+| **Tasks** | `GET /api/tasks`         | Lista todas as tarefas.             |
+| **Tasks** | `POST /api/tasks`        | Cria uma nova tarefa.               |
+| **Tasks** | `GET /api/tasks/{id}`    | Retorna os dados de uma tarefa.     |
+| **Tasks** | `PUT /api/tasks/{id}`    | Atualiza informações de uma tarefa. |
+| **Tasks** | `DELETE /api/tasks/{id}` | Remove uma tarefa.                  |
+
+| Categoria       | Método & Endpoint                  | Descrição                            |
+| --------------- | ---------------------------------- | ------------------------------------ |
+| **Comentários** | `GET /api/comments/task/{taskId}`  | Lista comentários de uma tarefa.     |
+| **Comentários** | `POST /api/comments/task/{taskId}` | Adiciona um comentário a uma tarefa. |
+| **Comentários** | `DELETE /api/comments/{id}`        | Remove um comentário.                |
 
 
 
@@ -44,7 +73,7 @@ Acessar o site do Postman para poder fazer as requisições para teste.
 
 ## 🛠️ Construído com
 
-Mencione as ferramentas que você usou para criar seu projeto
+
 
 * Java 21
 * SpringBoot Framework
