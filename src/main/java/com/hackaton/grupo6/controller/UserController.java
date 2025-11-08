@@ -1,9 +1,6 @@
 package com.hackaton.grupo6.controller;
 
-import com.hackaton.grupo6.dto.GetUserResponseDTO;
-import com.hackaton.grupo6.dto.RegisterUserRequestDTO;
-import com.hackaton.grupo6.dto.RegisterUserResponseDTO;
-import com.hackaton.grupo6.dto.UpdateUserRequestDTO;
+import com.hackaton.grupo6.dto.*;
 import com.hackaton.grupo6.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -36,5 +33,10 @@ public class UserController {
     @PatchMapping("/{id}")
     public GetUserResponseDTO updateUser(@PathVariable UUID id, @RequestBody UpdateUserRequestDTO updateRequest) {
         return userService.updateUser(id, updateRequest);
+    }
+
+    @PatchMapping("setFerias/{id}")
+    public SetFeriasResponseDTO setFerias(@PathVariable UUID id) {
+        return userService.setFerias(id);
     }
 }
