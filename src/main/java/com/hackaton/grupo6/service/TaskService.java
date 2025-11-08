@@ -1,5 +1,6 @@
 package com.hackaton.grupo6.service;
 
+import com.hackaton.grupo6.model.Team;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -7,9 +8,9 @@ import com.hackaton.grupo6.model.Task;
 import com.hackaton.grupo6.model.User;
 import com.hackaton.grupo6.repository.TaskRepository;
 import com.hackaton.grupo6.repository.UserRepository;
+import com.hackaton.grupo6.repository.TeamRepository;
 import com.hackaton.grupo6.dto.TaskRequestDTO;
 import com.hackaton.grupo6.dto.TaskResponseDTO;
-import com.hackaton.grupo6.model.Team;
 
 
 import java.util.ArrayList;
@@ -23,6 +24,7 @@ public class TaskService {
 
     private final TaskRepository taskRepository;
     private final UserRepository userRepository;
+    private final TeamRepository teamRepository;
 
     public TaskResponseDTO createTask(TaskRequestDTO dto) {
 
@@ -32,13 +34,16 @@ public class TaskService {
         User employee = userRepository.findById(dto.idEmployee())
                 .orElseThrow(() -> new RuntimeException("Employee não encontrado"));
 
+        Team team = teamRepository.findById(dto.teamId())
+                .orElseThrow(() -> new RuntimeException("Equipe não encontrada"));
+
         Task task = new Task();
         task.setName(dto.name());
         task.setAbout(dto.about());
         task.setIdManager(manager);
         task.setIdEmployee(employee);
         task.setTaskPriority(dto.taskPriority());
-        task.setTeam(IdTeam);
+        task.setTeam(team);
         task.setStatusTask(dto.statusTask());
         task.setStartDate(dto.startDate());
         task.setEndDate(dto.endDate());
