@@ -28,10 +28,10 @@ public class TimeController {
         return teamService.getTeamId(uuid);
     }
 
-    @PostMapping()
-    public ResponseEntity<TeamResponseDTO> createTeam(@RequestBody TeamRequestDTO teamRequestDTO){
+    @PostMapping("/{id}")
+    public ResponseEntity<TeamResponseDTO> createTeam(@PathVariable UUID id, @RequestBody TeamRequestDTO teamRequestDTO){
 
-        TeamResponseDTO createdTeam = teamService.createTeam(teamRequestDTO);
+        TeamResponseDTO createdTeam = teamService.createTeam(id, teamRequestDTO);
 
         return ResponseEntity
                 .status(HttpStatus.CREATED)
